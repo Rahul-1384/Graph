@@ -9,6 +9,7 @@ public class GraphImplementation{
         }
     }
 
+    
     // Add Edges
     public void addEdges(int v1, int v2, int w){
         graph.get(v1).put(v2,w);
@@ -38,6 +39,7 @@ public class GraphImplementation{
     }
 
 
+
     // remove vertex
     public void removeVertex(int v){
         for(int key : graph.get(v).keySet()){
@@ -45,6 +47,7 @@ public class GraphImplementation{
         }
         graph.remove(v);
     }
+
 
 
     // Display
@@ -55,6 +58,8 @@ public class GraphImplementation{
             }
         }
     }
+
+
 
     // Find Path
     public boolean findPath(int v1, int v2){
@@ -78,6 +83,8 @@ public class GraphImplementation{
         set.remove(v1);
         return false;
     }
+
+
 
 
     // Print all path
@@ -140,6 +147,62 @@ public class GraphImplementation{
             }
         }
     }
+
+
+    // BFT ---> breadth first traversal
+    public void BFT(int v){
+        HashSet<Integer> visited = new HashSet<>();
+        for(int k : graph.keySet()){
+            if(!visited.contains(k)){
+                // BFS(k,visited);
+                Queue<Integer> q = new LinkedList<>();
+                q.add(v);
+                while(!q.isEmpty()){
+                    int rv = q.poll();
+                    if(visited.contains(rv)){
+                        continue;
+                    }
+                    visited.add(rv);
+                    System.out.println(rv);
+                    for(int a : graph.get(rv).keySet()){
+                        q.add(a);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    // No of components of a graph
+    public void noOfComponents(int v,int count){
+        HashSet<Integer> visited = new HashSet<>();
+        for(int k : graph.keySet()){
+            if(!visited.contains(k)){
+                count++;
+                // BFS(k,visited);
+                Queue<Integer> q = new LinkedList<>();
+                q.add(v);
+                while(!q.isEmpty()){
+                    int rv = q.poll();
+                    if(visited.contains(rv)){
+                        continue;
+                    }
+                    visited.add(rv);
+                    for(int a : graph.get(rv).keySet()){
+                        q.add(a);
+                    }
+                }
+            }
+        }
+        System.out.println(count);
+    }
+
+
+
+
+
+    
     public static void main(String[] args) {
         GraphImplementation graph = new GraphImplementation(7);
         graph.addEdges(1, 2, 10);
@@ -148,11 +211,11 @@ public class GraphImplementation{
         graph.addEdges(2, 3, 30);
         graph.addEdges(3, 2, 30);
         graph.addEdges(3, 4, 40);
-        graph.addEdges(4, 1, 20);
-        graph.addEdges(4, 3, 40);
-        graph.addEdges(4, 5, 50);
-        graph.addEdges(5, 4, 50);
-        graph.addEdges(5, 6, 60);
+        // graph.addEdges(4, 1, 20);
+        // graph.addEdges(4, 3, 40);
+        // graph.addEdges(4, 5, 50);
+        // graph.addEdges(5, 4, 50);
+        // graph.addEdges(5, 6, 60);
         graph.addEdges(5, 7, 70);
         graph.addEdges(6, 5, 60);
         graph.addEdges(6, 6, 80);
@@ -164,9 +227,18 @@ public class GraphImplementation{
         System.out.println("\nDFS starting from node 1:");
         graph.DFS(1);
         
-        System.out.println("\nPath between 1 and 7 exists: " + graph.findPath(1, 7));
+        // System.out.println("\nPath between 1 and 7 exists: " + graph.findPath(1, 7));
         
-        System.out.println("\nAll paths from 1 to 7:");
-        graph.printAllPath(1, 7);
+        // System.out.println("\nAll paths from 1 to 7:");
+        // graph.printAllPath(1, 7);
+
+        System.out.println("\nDFS search:");
+        graph.DFS(1);
+
+        System.out.println("\nBFT:");
+        graph.BFT(1);
+
+        System.out.println("\nNo of Components:");
+        graph.noOfComponents(1, 0);
     }
 }
