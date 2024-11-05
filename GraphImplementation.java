@@ -201,26 +201,52 @@ public class GraphImplementation{
 
 
 
+    // Is Cycle or not
+    public boolean isCycle(int v){
+        HashSet<Integer> visited = new HashSet<>();
+        for(int k : graph.keySet()){
+            if(!visited.contains(k)){
+                // BFS(k,visited);
+                Queue<Integer> q = new LinkedList<>();
+                q.add(v);
+                while(!q.isEmpty()){
+                    int rv = q.poll();
+                    if(visited.contains(rv)){
+                        return true;
+                    }
+                    visited.add(rv);
+                    for(int a : graph.get(rv).keySet()){
+                        q.add(a);
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
-    
+
+
+
+
+
     public static void main(String[] args) {
         GraphImplementation graph = new GraphImplementation(7);
         graph.addEdges(1, 2, 10);
         graph.addEdges(1, 4, 20);
-        graph.addEdges(2, 1, 10);
+        // graph.addEdges(2, 1, 10);
         graph.addEdges(2, 3, 30);
-        graph.addEdges(3, 2, 30);
+        // graph.addEdges(3, 2, 30);
         graph.addEdges(3, 4, 40);
         // graph.addEdges(4, 1, 20);
         // graph.addEdges(4, 3, 40);
-        // graph.addEdges(4, 5, 50);
+        graph.addEdges(4, 5, 50);
         // graph.addEdges(5, 4, 50);
-        // graph.addEdges(5, 6, 60);
+        graph.addEdges(5, 6, 60);
         graph.addEdges(5, 7, 70);
-        graph.addEdges(6, 5, 60);
-        graph.addEdges(6, 6, 80);
-        graph.addEdges(7, 5, 70);
-        graph.addEdges(7, 6, 80);
+        // graph.addEdges(6, 5, 60);
+        graph.addEdges(6, 7, 80);
+        // graph.addEdges(7, 5, 70);
+        // graph.addEdges(7, 6, 80);
         graph.display();
         graph.BFS(1);
         
@@ -238,7 +264,10 @@ public class GraphImplementation{
         System.out.println("\nBFT:");
         graph.BFT(1);
 
-        System.out.println("\nNo of Components:");
+        System.out.print("\nNo of Components:");
         graph.noOfComponents(1, 0);
+
+        System.out.print("\nIs Cycle: ");
+        System.out.print(graph.isCycle(1));
     }
 }
