@@ -229,6 +229,53 @@ public class GraphImplementation{
 
 
 
+
+// Spanning Tree
+    class pair{
+
+        int vtx;
+        int parent;
+        int cost;
+        pair(int vtx, int parent, int cost){
+            this.vtx = vtx;
+            this.parent = parent;
+            this.cost = cost;
+        }
+    }
+    public void MST(int v){
+        PriorityQueue<pair> pq = new PriorityQueue<pair>(new Comparator<pair>() {
+            public int compare(pair o1, pair o2){
+                return o1.cost - o2.cost;
+            }
+        });
+        
+        int ans = 0;
+        HashSet<Integer> visited = new HashSet<>();
+        pq.add(new pair(v, v, 0));
+        while(!pq.isEmpty()){
+            pair rv = pq.poll();
+            int vtx = rv.vtx;
+            int parent = rv.parent;
+            int cost = rv.cost;
+            if(visited.contains(vtx)){
+                continue;
+            }
+            visited.add(vtx);
+            System.out.println(vtx+" "+parent+" "+cost);
+            ans += cost;
+
+            for(int k : graph.get(vtx).keySet()){
+                pq.add(new pair(k, vtx, graph.get(vtx).get(k)));
+            }
+        }
+        System.out.println("Spanning Tree: "+ans);
+    }
+
+
+// Shortest Path
+
+
+
     public static void main(String[] args) {
         GraphImplementation graph = new GraphImplementation(7);
         graph.addEdges(1, 2, 10);
@@ -269,5 +316,7 @@ public class GraphImplementation{
 
         System.out.print("\nIs Cycle: ");
         System.out.print(graph.isCycle(1));
+
+        graph.MST(1);
     }
 }
