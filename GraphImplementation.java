@@ -360,6 +360,7 @@ public class GraphImplementation{
         graph.addEdges(1, 4, 25);
         graph.addEdges(2, 3, 20);
         graph.addEdges(3, 4, -5);
+        graph.addEdges(3, 0, -50);
 
 
         graph.display();
