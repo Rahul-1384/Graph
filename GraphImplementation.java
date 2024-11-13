@@ -2,9 +2,11 @@ import java.util.*;
 
 public class GraphImplementation{
     HashMap<Integer,HashMap<Integer,Integer>> graph;
+    int vtx = 0;
     public GraphImplementation(int v){
+        vtx = v;
         graph = new HashMap<>();
-        for(int i=1;i<=v;i++){
+        for(int i=0;i<=v;i++){
             graph.put(i, new HashMap<Integer,Integer>());
         }
     }
@@ -13,7 +15,7 @@ public class GraphImplementation{
     // Add Edges
     public void addEdges(int v1, int v2, int w){
         graph.get(v1).put(v2,w);
-        graph.get(v2).put(v1,w);
+        // graph.get(v2).put(v1,w);
     }
 
 
@@ -273,27 +275,93 @@ public class GraphImplementation{
 
 
 // Shortest Path
+// BalmanFord
+    class Pair{
+        int v1;
+        int v2;
+        int cost;
+
+        Pair(int v1, int v2, int cost){
+            this.v1 = v1;
+            this.v2 = v2;
+            this.cost = cost;
+        }
+        public String toString(){
+            return v1+" "+v2+" "+cost;
+        }
+    }
+    public List<Pair> pairList(){
+        List<Pair> list = new ArrayList<>();
+        for(int k : graph.keySet()){
+            for(int j : graph.get(k).keySet()){
+                int cost = graph.get(k).get(j);
+                Pair p = new Pair(k, j, cost);
+                list.add(p);
+            }
+        }
+        return list;
+    }
+
+    public void belmanFord(){
+        int[] cost = new int[vtx];
+        Arrays.fill(cost, Integer.MAX_VALUE);
+        cost[0] = 0;
+        List<Pair> list = pairList();
+
+        for(int i=0;i<=vtx;i++){
+            for(Pair k : list){
+                int v1 = k.v1;
+                int v2 = k.v2;
+                int wt = k.cost;
+    
+                int oldCost = cost[v2];
+                int newCost = cost[v1] + wt;
+    
+                if(i == vtx && oldCost > newCost){
+                    System.out.println("-ve edge");
+                    return;
+                }
+    
+                if(newCost < oldCost){
+                    cost[v2] = newCost;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(cost));
+        
+    }
+
 
 
 
     public static void main(String[] args) {
-        GraphImplementation graph = new GraphImplementation(7);
-        graph.addEdges(1, 2, 10);
-        graph.addEdges(1, 4, 20);
+        GraphImplementation graph = new GraphImplementation(5);
+        // graph.addEdges(1, 2, 10);
+        // graph.addEdges(1, 4, 20);
         // graph.addEdges(2, 1, 10);
-        graph.addEdges(2, 3, 30);
+        // graph.addEdges(2, 3, 30);
         // graph.addEdges(3, 2, 30);
-        graph.addEdges(3, 4, 40);
+        // graph.addEdges(3, 4, 40);
         // graph.addEdges(4, 1, 20);
         // graph.addEdges(4, 3, 40);
-        graph.addEdges(4, 5, 50);
+        // graph.addEdges(4, 5, 50);
         // graph.addEdges(5, 4, 50);
-        graph.addEdges(5, 6, 60);
-        graph.addEdges(5, 7, 70);
+        // graph.addEdges(5, 6, 60);
+        // graph.addEdges(5, 7, 70);
         // graph.addEdges(6, 5, 60);
-        graph.addEdges(6, 7, 80);
+        // graph.addEdges(6, 7, 80);
         // graph.addEdges(7, 5, 70);
         // graph.addEdges(7, 6, 80);
+
+
+        graph.addEdges(0, 1, -10);
+        graph.addEdges(0, 2, 10);
+        graph.addEdges(1, 3, 10);
+        graph.addEdges(1, 4, 25);
+        graph.addEdges(2, 3, 20);
+        graph.addEdges(3, 4, -5);
+
+
         graph.display();
         graph.BFS(1);
         
@@ -317,6 +385,13 @@ public class GraphImplementation{
         System.out.print("\nIs Cycle: ");
         System.out.print(graph.isCycle(1));
 
-        graph.MST(1);
+        System.out.println();
+        // graph.MST(1);
+
+        System.out.println();
+        graph.pairList();
+
+        System.out.println();
+        graph.belmanFord();
     }
 }
